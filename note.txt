@@ -1,0 +1,133 @@
+﻿---- Array (T[]) ---- 
+    Taglia fissa: una volta creato, non puoi aggiungere o rimuovere elementi.
+    Più veloce e leggero in certi casi.
+    Sintassi: Student[] students = new Student[3];
+
+Vantaggi:
+    Più efficiente se sai già quanti elementi ti servono.
+    Usa meno memoria.
+
+Svantaggi:
+    Non puoi fare .Add(), .Remove(), ecc.
+    Devi creare un nuovo array se vuoi aggiungere elementi.
+
+---- List (List<T>) ---- 
+    Taglia dinamica: puoi aggiungere/rimuovere elementi quando vuoi.
+    Sintassi: List<Student> studentList = new List<Student>();
+
+Vantaggi:
+    Puoi usare .Add(), .Remove(), .Count, .Clear(), ecc.
+    Molto più flessibile, soprattutto per array che cambiano nel tempo.
+
+Svantaggi:
+    Leggermente più lenta e pesante di un array.
+    Sotto il cofano usa un array, ma ne gestisce la crescita per te (con costi aggiuntivi).
+
+
+T[]         Una scatola di uova da 6: fissa.
+List<T>     Una busta della spesa: ci metti quel che vuoi, finché non scoppia.
+
+| Hai pochi elementi, fissi                 | → Usa T[]     |
+| Ti servono aggiunte/rimozioni dinamiche   | → Usa List<T> |
+
+
+
+----------------------------------------------------------------
+
+
+Student[] newArray = (Student[])students.Append(student2); <---  non funziona, Append non restituisce un array ma un IEnumerable
+
+Student[] newArray = students.Append(student2).ToArray();  <---  IEnumerableè una sequenza iterabile, non un array, dunque va convertito in array con ToArray()
+
+
+Pubblica (public) → Può essere letta e modificata da fuori la classe.
+Esempio:
+student.Name = "Sara"; // ok
+
+Privata (private) → Visibile solo dentro la classe stessa, fuori dalla classe non puoi accedervi direttamente.
+Esempio:
+student._yob = 2000; // ❌ ERRORE: _yob è private
+
+    public: quando vuoi permettere l'accesso esterno (come un campo visibile)
+    private: quando vuoi controllare l'accesso tramite metodi o proprietà
+
+----------------------------------------------------------------
+
+
+PROPERTY
+    public int Yob
+    {
+        get { return _yob; } // restituisce il valore
+        set { _yob = value; } // imposta il valore
+    }
+    public int Yob { get; private set; } // solo lettura, non puoi modificarlo da fuori
+    public int Yob => _yob; // proprietà read-only, non puoi modificarlo da fuori
+
+----------------------------------------------------------------
+
+
+UNA CLASSE è come uno stampo per creare oggetti
+Serve a definire un tipo di oggetto, con:
+    .proprietà (dati che l'oggetto ha)
+    .metodi (azioni che può fare)
+    .magari un costruttore (per creare oggetti da quello stampo)
+
+UN COSTRUTTORE è un metodo speciale della classe
+Serve a inizializzare un oggetto quando lo crei con new.
+
+    La classe è la ricetta della torta.
+    Il costruttore è il momento in cui accendi il forno e impasti, per creare una torta reale.
+
+In codice:
+class Student  // ← questa è la classe (ricetta)
+{
+    public string Name;
+
+    public Student(string name)  // ← questo è il costruttore (impasta e cuoce)
+    {
+        Name = name;
+    }
+}
+
+Quando scrivi:
+Student s = new Student("Sara"); → Stai usando il costruttore per creare un oggetto a partire dalla classe
+
+In sintesi:
+Classe      -> Un tipo personalizzato	Definire oggetti con proprietà e metodi
+Costruttore ->	Un metodo speciale dentro la classe	Inizializzare l'oggetto quando lo crei
+
+----------------------------------------------------------------
+
+
+In C# hai:
+🔹 let
+    Non esiste!!! Solo in Javascript
+
+🔹 var
+    Tipo implicito: il compilatore capisce il tipo dal valore.
+    Esattamente come let in JS se lo usi per variabili normali.
+    Esempio: var x = 42; → C# capisce che x è un int.
+
+🔸 const
+    Valore immutabile, fissato a compile-time.
+    Come const in JS.
+    Esempio: const double Pi = 3.14;
+
+🔸 readonly (per campi di classe)
+    Non è una keyword per dichiarare variabili locali, ma solo per campi.
+    È come const, ma il valore può essere assegnato nel costruttore, non solo subito.
+
+----------------------------------------------------------------
+
+
+Se vuoi stampare un singolo valore, tipo:
+Console.WriteLine(student1.Name);
+    ✔️ Funziona benissimo. È tutto ciò che ti serve.
+
+Ma se vuoi stampare tutti gli studenti di un Teacher, allora:
+Console.WriteLine(teacher1.Students);
+    ❌ non funziona come credi. Ti stampa qualcosa tipo:
+    System.Collections.Generic.List`1[ClassesAndDataStructures.Student]
+
+Perché?
+Perché Students è una lista. E Console.WriteLine() non sa come “tradurre” una lista in una stringa leggibile.

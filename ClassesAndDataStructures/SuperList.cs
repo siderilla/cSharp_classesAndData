@@ -37,7 +37,7 @@ namespace ClassesAndDataStructures
             return _realArray[index];
         }
 
-        public T Pop()
+        public T Pop() //rimuove l'ultimo elemento dell'array
         {
             int originialLenght = _realArray.Length;
             int newArrayLength = originialLenght - 1;
@@ -51,5 +51,28 @@ namespace ClassesAndDataStructures
             _realArray = newArray;
             return element;
         }
+
+        public void Delete(int index)
+        {
+            if (index < 0 || index >= _realArray.Length)
+                throw new IndexOutOfRangeException("Segmentation fault");
+
+            int newLength = _realArray.Length - 1;
+            var newArray = new T[newLength];
+
+            int j = 0; // indice per scrivere nel nuovo array
+
+            for (int i = 0; i < _realArray.Length; i++)
+            {
+                if (i == index)
+                    continue; // salta l'elemento da rimuovere
+
+                newArray[j] = _realArray[i];
+                j++;
+            }
+
+            _realArray = newArray;
+        }
+
     }
 }
