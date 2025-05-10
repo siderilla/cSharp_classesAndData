@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,7 +57,7 @@ namespace ClassesAndDataStructures
         public void Delete(int index)
         {
             if (index < 0 || index >= _realArray.Length)
-                throw new IndexOutOfRangeException("Segmentation fault");
+                return;
 
             int newLength = _realArray.Length - 1;
             var newArray = new T[newLength];
@@ -74,5 +76,38 @@ namespace ClassesAndDataStructures
             _realArray = newArray;
         }
 
+        public T? shift()
+        {
+            if (_realArray.Length == 0)
+                return default;
+
+            var newArrayLength = _realArray.Length - 1;
+            var newArray = new T[newArrayLength];
+
+            for (int i = 1; i < _realArray.Length; i++)
+            {
+                newArray[i - 1] = _realArray[i];
+            }
+
+            var element = _realArray[0];
+
+            _realArray = newArray;
+
+            return element;
+        }
+        
+        public void unShift(T item)
+        {
+            var newArrayLength = _realArray.Length + 1;
+            var newArray = new T[newArrayLength];
+
+            newArray[0] = item;
+            for (int i = 0; i < newArrayLength; i++)
+            {
+                newArray[i] = _realArray[i - 1];
+            }
+
+            _realArray = newArray;
+        }
     }
 }
